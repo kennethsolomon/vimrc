@@ -6,6 +6,7 @@ set visualbell
 set tabstop=4 softtabstop=4
 set shiftwidth=4
 set expandtab
+set autoindent
 set smartindent
 set nowrap
 set smartcase
@@ -14,8 +15,10 @@ set nobackup
 set undodir=~/.vim/undodir
 set undofile
 set incsearch
-set clipboard=unnamedplus
+set clipboard^=unnamed
 set ruler
+set paste
+set encoding=UTF-8
 
 set colorcolumn=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
@@ -38,6 +41,8 @@ Plug 'vim-syntastic/syntastic'
 Plug 'jiangmiao/auto-pairs'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'mattn/emmet-vim'
+Plug 'preservim/nerdcommenter'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 call plug#end()
 
@@ -45,6 +50,81 @@ colorscheme gruvbox
 set background=dark
 
 if executable('rg')
-	let g:rg_derive_root='true'
+        let g:rg_derive_root='true'
 endif
 
+set pastetoggle=<F10>
+
+let g:airline_powerline_fonts = 1
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ 'Ignored'   : '☒',
+    \ "Unknown"   : "?"
+    \ }
+
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+let mapleader = " "
+let g:netrw_browse_split=2
+let g:netrw_banner=0
+let g:netrw_windsize=25
+
+let g:user_emmet_mode='n' "only enable normal mode functions.
+let g:user_emmet_leader_key=','
+
+let g:ctrlp_use_caching=0
+
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+set laststatus=2
+set showcmd
+
+" enable line numbers
+let NERDTreeShowLineNumbers=1
+" make sure relative line numbers are used
+autocmd FileType nerdtree setlocal relativenumber
+
+" nmap s <Plug>(easymotion-overwin-f)
+nmap s <Plug>(easymotion-overwin-f2)
+" Turn on case-insensitive feature
+let g:EasyMotion_smartcase = 1
+" JK motions: Line motions
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map  <Leader>w <Plug>(easymotion-bd-w)
+nmap <Leader>w <Plug>(easymotion-overwin-w)
+
+nnoremap <C-o> :NERDTreeToggle<CR>
+nnoremap <leader><leader>h :wincmd h<CR>
+nnoremap <leader><leader>j :wincmd j<CR>
+nnoremap <leader><leader>k :wincmd k<CR>
+nnoremap <leader><leader>l :wincmd l<CR>
+nnoremap <leader>u :UndotreeToggle<CR>
+nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+nnoremap <leader>ps :RG<SPACE>
+nnoremap <silent> <leader>+ :vertical resize +5<CR>
+nnoremap <silent> <leader>- :vertical resize -5<CR>
+
+" YCM
+" The Best Part.
+nnoremap <silent> <Leader>gd :YcmCompleter GoTo<CR>
+nnoremap <silent> <Leader>gf :YcmCompleter FixIt<CR>
+
+" Set up vertical vs block cursor for insert/normal mode
+ if &term =~ "screen."
+     let &t_ti.="\eP\e[1 q\e\\"
+     let &t_SI.="\eP\e[5 q\e\\"
+     let &t_EI.="\eP\e[1 q\e\\"
+     let &t_te.="\eP\e[0 q\e\\"
+ else
+     let &t_ti.="\<Esc>[1 q"
+     let &t_SI.="\<Esc>[5 q"
+     let &t_EI.="\<Esc>[1 q"
+     let &t_te.="\<Esc>[0 q"
+ endif
